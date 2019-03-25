@@ -528,6 +528,95 @@ class ProbeFrame(CNCRibbon.PageFrame):
 		tkExtra.Balloon.set(b, _("Center probing using a ring"))
 
 		#----------------------------------------------------------------
+		# Edge probing
+		#----------------------------------------------------------------
+		lframe = tkExtra.ExLabelFrame(self, text=_("Edge Finding"), foreground="DarkBlue")
+		lframe.pack(side=TOP, expand=YES, fill=X)
+
+		#Label(lframe(), text=_("Diameter:")).pack(side=LEFT)
+		#self.diameter = tkExtra.FloatEntry(lframe(), background="White")
+		#self.diameter.pack(side=LEFT, expand=YES, fill=X)
+		#tkExtra.Balloon.set(self.diameter, _("Probing ring internal diameter"))
+		#self.addWidget(self.diameter)
+
+		# ---
+		row,col = 0,0
+		#Label(lframe(), text=_("Probe:")).grid(row=row, column=col, sticky=E)
+
+		f = Frame(lframe())
+		f.pack(expand = YES, fill=X, side=LEFT)
+		col+=1
+		b = Button(lframe(),
+				image=Utils.icons["target32"],
+				text=_("X+"),
+				compound=TOP,
+				command=self.probeCenter,
+				width=48,
+				padx=5, pady=0)
+		b.grid(row=row, column=col, sticky=EW)
+		b.pack(side=LEFT, padx=5)
+		#self.addWidget(b)
+		tkExtra.Balloon.set(b, _("Probe towards the left edge of a part"))
+		
+		col += 1
+		
+		b = Button(lframe(),
+				image=Utils.icons["target32"],
+				text=_(" X-"),
+				compound=TOP,
+				command=self.probeCenter,
+				width=48,
+				padx=5, pady=0)
+		b.pack(side=LEFT, padx=5)
+		#b.grid(row=row, column=col, sticky=EW)
+		self.addWidget(b)
+		tkExtra.Balloon.set(b, _("Probe towards the right edge of a part"))
+		
+		col += 1
+		
+		b = Button(lframe(),
+				image=Utils.icons["target32"],
+				text=_("Y+"),
+				compound=TOP,
+				command=self.probeCenter,
+				width=48,
+				padx=5, pady=0)
+		b.pack(side=LEFT, padx=5)
+		#b.grid(row=row, column=col, sticky=EW)
+		self.addWidget(b)
+		tkExtra.Balloon.set(b, _("Probe towards the bottom edge of a part"))
+		
+		col += 1
+		
+		b = Button(lframe(),
+				image=Utils.icons["target32"],
+				text=_("Y-"),
+				compound=TOP,
+				width=48,
+				command=self.probeCenter,
+				padx=5, pady=0)
+		b.pack(side=LEFT, padx=5)
+		#b.grid(row=row, column=col, sticky=EW)
+		self.addWidget(b)
+		tkExtra.Balloon.set(b, _("Probe towards the top edge of a part"))
+		
+		b = Button(lframe(),
+				image=Utils.icons["target32"],
+				text=_("Z-"),
+				compound=TOP,
+				width=48,
+				command=self.probeCenter,
+				padx=5, pady=0)
+		b.pack(side=LEFT, padx=5, pady=5)
+		#b.grid(row=row, column=col, sticky=EW)
+		self.addWidget(b)
+		tkExtra.Balloon.set(b, _("Probe towards the top surface of your stock"))
+		
+		f = Frame(lframe())
+		f.pack(expand = YES, fill=X, side=RIGHT)
+		
+
+		#----------------------------------------------------------------
 		# Align / Orient / Square ?
 		#----------------------------------------------------------------
 		lframe = tkExtra.ExLabelFrame(self, text=_("Orient"), foreground="DarkBlue")
@@ -1812,7 +1901,7 @@ class ToolFrame(CNCRibbon.PageFrame):
 
 		self.probeDistance.set(Utils.getFloat("Probe","tooldistance"))
 		self.toolHeight.set(   Utils.getFloat("Probe","toolheight"))
-		self.toolPolicy.set(TOOL_POLICY[Utils.getInt("Probe","toolpolicy",0)])
+		#self.toolPolicy.set(TOOL_POLICY[Utils.getInt("Probe","toolpolicy",0)])
 		self.toolWait.set(TOOL_WAIT[Utils.getInt("Probe","toolwait",1)])
 		CNC.vars["toolmz"] = Utils.getFloat("Probe","toolmz")
 		self.set()
