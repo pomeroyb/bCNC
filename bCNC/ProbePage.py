@@ -219,6 +219,7 @@ class ProbeCommonFrame(CNCRibbon.PageFrame):
 	probeFeed = None
 	tlo       = None
 	probeCmd  = None
+	probeDiam = None
 
 	def __init__(self, master, app):
 		CNCRibbon.PageFrame.__init__(self, master, "ProbeCommon", app)
@@ -258,6 +259,20 @@ class ProbeCommonFrame(CNCRibbon.PageFrame):
 		ProbeCommonFrame.probeFeed.grid(row=row, column=col, sticky=EW)
 		tkExtra.Balloon.set(ProbeCommonFrame.probeFeed, _("Set probe feed rate"))
 		self.addWidget(ProbeCommonFrame.probeFeed)
+        
+        # ----
+		# Probe Diameter
+		row += 1
+		col  = 0
+		Label(frame, text=_("Probe Diameter:")).grid(row=row, column=col, sticky=E)
+		col += 1
+		self.probeDiamVar = StringVar()
+		self.probeDiamVar.trace("w", lambda *_: ProbeCommonFrame.probeUpdate())
+		ProbeCommonFrame.probeDiam = tkExtra.FloatEntry(frame, background="White", width=5,
+								textvariable=self.probeDiamVar)
+		ProbeCommonFrame.probeDiam.grid(row=row, column=col, sticky=EW)
+		tkExtra.Balloon.set(ProbeCommonFrame.probeDiam, _("Set probe tip diameter"))
+		self.addWidget(ProbeCommonFrame.probeDiam)
 
 		# ----
 		# Tool offset
@@ -333,12 +348,14 @@ class ProbeCommonFrame(CNCRibbon.PageFrame):
 		Utils.setFloat("Probe", "fastfeed", ProbeCommonFrame.fastProbeFeed.get())
 		Utils.setFloat("Probe", "feed", ProbeCommonFrame.probeFeed.get())
 		Utils.setFloat("Probe", "tlo",  ProbeCommonFrame.tlo.get())
+		Utils.setFloat("Probe", "diameter", ProbeCommonFrame.probeDiam.get())
 		Utils.setFloat("Probe", "cmd",  ProbeCommonFrame.probeCmd.get().split()[0])
 
 	#-----------------------------------------------------------------------
 	def loadConfig(self):
 		ProbeCommonFrame.fastProbeFeed.set(Utils.getFloat("Probe","fastfeed"))
 		ProbeCommonFrame.probeFeed.set(Utils.getFloat("Probe","feed"))
+		ProbeCommonFrame.probeDiam.set(Utils.getFloat("Probe","diameter"))
 		ProbeCommonFrame.tlo.set(      Utils.getFloat("Probe","tlo"))
 		cmd = Utils.getStr("Probe","cmd")
 		for p in PROBE_CMD:
