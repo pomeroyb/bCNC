@@ -328,6 +328,7 @@ class ProbeCommonFrame(CNCRibbon.PageFrame):
 			CNC.vars["fastprbfeed"] = float(ProbeCommonFrame.fastProbeFeed.get())
 			CNC.vars["prbfeed"]     = float(ProbeCommonFrame.probeFeed.get())
 			CNC.vars["prbcmd"]      = str(ProbeCommonFrame.probeCmd.get().split()[0])
+			CNC.vars["prbdiam"] = float(ProbCommonFrame.probeDiam.get())
 			return False
 		except:
 			return True
@@ -549,12 +550,6 @@ class ProbeFrame(CNCRibbon.PageFrame):
 		#----------------------------------------------------------------
 		lframe = tkExtra.ExLabelFrame(self, text=_("Edge Finding"), foreground="DarkBlue")
 		lframe.pack(side=TOP, expand=YES, fill=X)
-
-		#Label(lframe(), text=_("Diameter:")).pack(side=LEFT)
-		#self.diameter = tkExtra.FloatEntry(lframe(), background="White")
-		#self.diameter.pack(side=LEFT, expand=YES, fill=X)
-		#tkExtra.Balloon.set(self.diameter, _("Probing ring internal diameter"))
-		#self.addWidget(self.diameter)
 
 		# ---
 		row,col = 0,0
@@ -913,7 +908,34 @@ class ProbeFrame(CNCRibbon.PageFrame):
 		lines.append("%wait")
 		lines.append("g90")
 		self.app.run(lines=lines)
-
+		
+	#-----------------------------------------------------------------------
+	# Probe X+
+	#-----------------------------------------------------------------------
+	def probeXPositive(self, event=None):
+		self.warnMessage()
+		
+		cmd = "G91 %s F%s"%(CNC.vars["prbcmd"], CNC.vars["prbfastfeed"])
+		dist = Utils.getFloat("CNC","travel_x") #We probe the whole length of the machine
+		lines = []
+		lines.append("%s x%s"%(cmd,dist))
+		lines.append("%wait")
+		#The probe is activated at the edge of the tool, so offset by 1/2 the diameter of the probe
+		#	to get the actual edge of the part
+		lines.append("tmp=prbx+(0.5*%d)"%CNC.vars["prbdiam"])
+		# Move in machine coordinates -5mm to back probe off from part
+		lines.append("g53 g21 g0 x[prbx-5]")
+		#return to user specified units
+		lines.append("%g"%CNC.vars[units])
+		# Probe again using the slow feed
+		cmd = "G91 %s F%s"%(CNC.vars["prbcmd"], CNC.vars["prbfeed"])
+		lines.append("%s x%s"%(cmd,dist))
+		lines.append("%wait")
+		
+		
+		
+		
+		
 	#-----------------------------------------------------------------------
 	# Solve the system and update fields
 	#-----------------------------------------------------------------------

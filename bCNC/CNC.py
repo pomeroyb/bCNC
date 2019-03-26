@@ -682,6 +682,7 @@ class CNC:
 			"prby"       : 0.0,
 			"prbz"       : 0.0,
 			"prbcmd"     : "G38.2",
+			"prbdiam"    : 3.0,
 			"prbfeed"    : 10.,
 			"errline"    : "",
 			"wx"         : 0.0,
