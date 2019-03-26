@@ -547,7 +547,7 @@ class ProbeFrame(CNCRibbon.PageFrame):
 		f.pack(expand = YES, fill=X, side=LEFT)
 		col+=1
 		b = Button(lframe(),
-				image=Utils.icons["target32"],
+				image=Utils.icons["x+32"],
 				text=_("X+"),
 				compound=TOP,
 				command=self.probeCenter,
@@ -561,7 +561,7 @@ class ProbeFrame(CNCRibbon.PageFrame):
 		col += 1
 		
 		b = Button(lframe(),
-				image=Utils.icons["target32"],
+				image=Utils.icons["x-32"],
 				text=_(" X-"),
 				compound=TOP,
 				command=self.probeCenter,
@@ -575,7 +575,7 @@ class ProbeFrame(CNCRibbon.PageFrame):
 		col += 1
 		
 		b = Button(lframe(),
-				image=Utils.icons["target32"],
+				image=Utils.icons["y+32"],
 				text=_("Y+"),
 				compound=TOP,
 				command=self.probeCenter,
@@ -589,7 +589,7 @@ class ProbeFrame(CNCRibbon.PageFrame):
 		col += 1
 		
 		b = Button(lframe(),
-				image=Utils.icons["target32"],
+				image=Utils.icons["y-32"],
 				text=_("Y-"),
 				compound=TOP,
 				width=48,
@@ -601,7 +601,7 @@ class ProbeFrame(CNCRibbon.PageFrame):
 		tkExtra.Balloon.set(b, _("Probe towards the top edge of a part"))
 		
 		b = Button(lframe(),
-				image=Utils.icons["target32"],
+				image=Utils.icons["z-32"],
 				text=_("Z-"),
 				compound=TOP,
 				width=48,
@@ -1901,7 +1901,7 @@ class ToolFrame(CNCRibbon.PageFrame):
 
 		self.probeDistance.set(Utils.getFloat("Probe","tooldistance"))
 		self.toolHeight.set(   Utils.getFloat("Probe","toolheight"))
-		#self.toolPolicy.set(TOOL_POLICY[Utils.getInt("Probe","toolpolicy",0)])
+		self.toolPolicy.set(TOOL_POLICY[Utils.getInt("Probe","toolpolicy",0)])
 		self.toolWait.set(TOOL_WAIT[Utils.getInt("Probe","toolwait",1)])
 		CNC.vars["toolmz"] = Utils.getFloat("Probe","toolmz")
 		self.set()
